@@ -1,7 +1,7 @@
 {
   "name": "sessao-app",
   "productName": "Sessão",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Programa da Sessão para Windows: assistir e transmitir com o som do computador",
   "main": "main.js",
   "author": "Eduardo",

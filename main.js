@@ -1,5 +1,5 @@
 // Sessão para Windows: uma janela que abre o site, com captura do som do computador ao transmitir.
-const { app, BrowserWindow, session, desktopCapturer, ipcMain, shell, Menu } = require('electron');
+const { app, BrowserWindow, session, desktopCapturer, ipcMain, shell, Menu, dialog, systemPreferences } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
@@ -122,10 +122,40 @@ function criarJanela() {
 // ---------- Permissões: só o site da Sessão, só o necessário ----------
 const PERMITIDAS = new Set(['media', 'display-capture', 'fullscreen', 'clipboard-sanitized-write', 'speaker-selection']);
 
+// Se a privacidade do Windows estiver bloqueando o microfone, avisa e oferece abrir a tela certa
+let ultimoAvisoMicrofone = 0;
+function avisarSeWindowsBloqueiaMicrofone() {
+  if (process.platform !== 'win32') return;
+  let estado = 'unknown';
+  try { estado = systemPreferences.getMediaAccessStatus('microphone'); } catch { return; }
+  if (estado !== 'denied' || Date.now() - ultimoAvisoMicrofone < 30000) return;
+  ultimoAvisoMicrofone = Date.now();
+  const opcoes = {
+    type: 'warning',
+    title: 'Microfone bloqueado pelo Windows',
+    message: 'O Windows está impedindo programas de usar o microfone.',
+    detail: 'Na tela que vai abrir, ligue "Acesso ao microfone" e também '
+      + '"Permitir que aplicativos da área de trabalho acessem o microfone". '
+      + 'Depois volte aqui e ligue o microfone de novo.',
+    buttons: ['Abrir configurações do microfone', 'Agora não'],
+    defaultId: 0,
+    cancelId: 1,
+    noLink: true,
+  };
+  const mostrar = janela ? dialog.showMessageBox(janela, opcoes) : dialog.showMessageBox(opcoes);
+  mostrar.then(({ response }) => {
+    if (response === 0) shell.openExternal('ms-settings:privacy-microphone').catch(() => {});
+  }).catch(() => {});
+}
+
 function configurarPermissoes() {
   const s = session.defaultSession;
   s.setPermissionRequestHandler((_wc, permissao, responder, detalhes) => {
-    responder(origemDe(detalhes.requestingUrl) === ORIGEM && PERMITIDAS.has(permissao));
+    const ok = origemDe(detalhes.requestingUrl) === ORIGEM && PERMITIDAS.has(permissao);
+    if (ok && permissao === 'media' && (detalhes.mediaTypes || []).includes('audio')) {
+      try { avisarSeWindowsBloqueiaMicrofone(); } catch { /* nunca atrapalha o pedido */ }
+    }
+    responder(ok);
   });
   s.setPermissionCheckHandler((_wc, permissao, origem) => origemDe(origem) === ORIGEM && PERMITIDAS.has(permissao));
   s.setDevicePermissionHandler(() => false); // USB, serial etc.: nunca
