@@ -1,0 +1,58 @@
+:root {
+  --fundo: #0e0d0c;
+  --painel: #171514;
+  --painel-2: #201d1b;
+  --linha: #2c2825;
+  --texto: #f1ece6;
+  --texto-2: #a39a91;
+  --texto-3: #6f675f;
+  --destaque: #f2b33d;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  display: flex; flex-direction: column;
+  background: var(--fundo); color: var(--texto);
+  font: 14px/1.45 "Segoe UI", system-ui, sans-serif;
+  user-select: none;
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+[hidden] { display: none !important; }
+
+header { padding: 18px 20px 0; border-bottom: 1px solid var(--linha); }
+h1 { margin: 0 0 14px; font-size: 18px; font-weight: 600; }
+.abas { display: flex; gap: 4px; }
+.abas button {
+  border: 0; background: transparent; padding: 8px 14px; color: var(--texto-2);
+  border-bottom: 2px solid transparent; font-weight: 600;
+}
+.abas button[aria-selected=true] { color: var(--texto); border-bottom-color: var(--destaque); }
+
+main { flex: 1; overflow-y: auto; padding: 18px 20px; }
+.grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+.cartao {
+  display: flex; flex-direction: column; gap: 8px; padding: 8px;
+  border: 2px solid var(--linha); border-radius: 10px; background: var(--painel); text-align: left;
+}
+.cartao:hover { border-color: #4a423b; }
+.cartao[aria-selected=true] { border-color: var(--destaque); background: var(--painel-2); }
+.cartao img:first-child { width: 100%; aspect-ratio: 16 / 9; object-fit: contain; background: #000; border-radius: 6px; }
+.nome { display: flex; align-items: center; gap: 6px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--texto-2); }
+.cartao[aria-selected=true] .nome { color: var(--texto); }
+.icone { width: 16px; height: 16px; flex: none; }
+.vazio { color: var(--texto-3); text-align: center; margin-top: 60px; }
+
+footer {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  padding: 14px 20px; border-top: 1px solid var(--linha); background: var(--painel);
+}
+.som { display: flex; align-items: flex-start; gap: 10px; max-width: 520px; cursor: pointer; }
+.som input { margin-top: 3px; accent-color: var(--destaque); width: 16px; height: 16px; }
+.som small { display: block; color: var(--texto-3); font-size: 12px; }
+.botoes { display: flex; gap: 8px; margin-left: auto; }
+.botoes button { height: 36px; padding: 0 16px; border-radius: 8px; font-weight: 600; }
+.secundario { background: var(--painel-2); border: 1px solid var(--linha); }
+.secundario:hover { background: #2a2623; }
+.principal { background: var(--destaque); border: 1px solid var(--destaque); color: #1a1205; }
+.principal:hover { background: #ffc552; }
+.principal:disabled { opacity: .45; cursor: default; }

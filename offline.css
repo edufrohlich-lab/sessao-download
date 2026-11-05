@@ -1,0 +1,18 @@
+html, body { height: 100%; margin: 0; }
+body {
+  display: grid; place-items: center; text-align: center;
+  background: #0e0d0c; color: #f1ece6; font: 15px/1.5 "Segoe UI", system-ui, sans-serif;
+}
+main { max-width: 380px; padding: 24px; }
+.marca { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; }
+.icone {
+  width: 28px; height: 28px; border-radius: 7px; background: #f2b33d; color: #1a1205;
+  display: inline-grid; place-items: center; font-size: 13px;
+}
+h1 { font-size: 20px; margin: 22px 0 8px; }
+p { color: #a39a91; margin: 0 0 8px; }
+.contagem { color: #6f675f; font-size: 13px; }
+button {
+  margin-top: 16px; height: 40px; padding: 0 20px; border-radius: 8px; cursor: pointer;
+  background: #f2b33d; border: 0; color: #1a1205; font: inherit; font-weight: 600;
+}

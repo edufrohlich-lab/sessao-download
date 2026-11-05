@@ -1,0 +1,70 @@
+{
+  "name": "sessao-app",
+  "productName": "Sessão",
+  "version": "1.0.0",
+  "description": "Programa da Sessão para Windows: assistir e transmitir com o som do computador",
+  "main": "main.js",
+  "author": "Eduardo",
+  "license": "UNLICENSED",
+  "private": true,
+  "siteUrl": "https://discdisc.duckdns.org",
+  "scripts": {
+    "start": "electron .",
+    "instalador": "electron-builder --win nsis --x64 --publish never"
+  },
+  "devDependencies": {
+    "electron": "^45.2.3",
+    "electron-builder": "^26.18.0"
+  },
+  "build": {
+    "appId": "com.edufrohlich.sessao",
+    "productName": "Sessão",
+    "copyright": "Sessão",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload-seletor.js",
+      "seletor.html",
+      "seletor.js",
+      "seletor.css",
+      "offline.html",
+      "offline.js",
+      "offline.css",
+      "assets/**",
+      "package.json"
+    ],
+    "publish": null,
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "artifactName": "Sessao-Instalador-${version}.exe"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "createDesktopShortcut": "always",
+      "createStartMenuShortcut": true,
+      "shortcutName": "Sessão",
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false,
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "uninstallDisplayName": "Sessão"
+    },
+    "electronLanguages": [
+      "pt-BR",
+      "en-US"
+    ],
+    "compression": "maximum"
+  }
+}

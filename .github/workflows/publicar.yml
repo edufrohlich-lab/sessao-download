@@ -1,0 +1,39 @@
+# Gera o instalador num Windows de verdade e publica em "Releases".
+# Roda sozinho a cada mudança no programa, ou pelo botão "Run workflow" na aba Actions.
+# Para lançar uma versão nova, aumente "version" no package.json.
+name: Publicar instalador
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths-ignore: ['README.md', 'LEIAME.md']
+
+permissions:
+  contents: write
+
+jobs:
+  publicar:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run instalador
+      - name: Publicar o download
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSAO=$(node -p "require('./package.json').version")
+          cp "dist/Sessao-Instalador-$VERSAO.exe" dist/Sessao-Instalador.exe
+          if gh release view "v$VERSAO" >/dev/null 2>&1; then
+            gh release upload "v$VERSAO" dist/Sessao-Instalador.exe --clobber
+          else
+            gh release create "v$VERSAO" dist/Sessao-Instalador.exe \
+              --title "Sessão $VERSAO" \
+              --notes "Instalador do programa da Sessão para Windows. Na tela \"O Windows protegeu o computador\", clique em **Mais informações → Executar assim mesmo**."
+          fi

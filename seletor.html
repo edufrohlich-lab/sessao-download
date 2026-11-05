@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src data:">
+  <title>Escolha o que transmitir</title>
+  <link rel="stylesheet" href="seletor.css">
+</head>
+<body>
+  <header>
+    <h1>Escolha o que transmitir</h1>
+    <div class="abas" role="tablist">
+      <button role="tab" id="aba-tela" aria-selected="true">Tela inteira</button>
+      <button role="tab" id="aba-janela" aria-selected="false">Uma janela</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="grade" id="grade" role="listbox" aria-label="Telas e janelas"></div>
+    <p class="vazio" id="vazio" hidden>Nenhuma janela encontrada. Abra o programa que você quer mostrar e clique em Atualizar.</p>
+  </main>
+
+  <footer>
+    <label class="som" id="campo-som" hidden>
+      <input type="checkbox" id="som" checked>
+      <span>
+        <strong>Transmitir o som do computador</strong>
+        <small>Vai junto tudo o que toca no computador (filme, jogo, YouTube). Avisos e músicas de outros programas também.</small>
+      </span>
+    </label>
+    <div class="botoes">
+      <button class="secundario" id="atualizar">Atualizar</button>
+      <button class="secundario" id="cancelar">Cancelar</button>
+      <button class="principal" id="transmitir" disabled>Transmitir</button>
+    </div>
+  </footer>
+
+  <script src="seletor.js"></script>
+</body>
+</html>
